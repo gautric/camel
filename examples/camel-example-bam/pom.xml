@@ -29,15 +29,6 @@
   <description>An example showing how to use Camel as a Business Activity Monitoring tool</description>
 
   <properties>
-    <camel.osgi.export.pkg>
-      org.apache.camel.example.bam.*
-    </camel.osgi.export.pkg>
-    <camel.osgi.import.additional>
-      org.apache.camel.bam.model
-    </camel.osgi.import.additional>
-    <!-- to avoid us import bunch other package -->
-    <camel.osgi.dynamic>*</camel.osgi.dynamic>
-    <camel.osgi.symbolic.name>${project.artifactId}</camel.osgi.symbolic.name>
     <skip.starting.camel.context>false</skip.starting.camel.context>
   </properties>
 
@@ -125,9 +116,6 @@
         <configuration>
           <forkCount>1</forkCount>
           <reuseForks>false</reuseForks>
-          <systemPropertyVariables>
-            <skipStartingCamelContext>${skip.starting.camel.context}</skipStartingCamelContext>
-          </systemPropertyVariables>
         </configuration>
       </plugin>
 
@@ -147,8 +135,8 @@
           <includePluginDependencies>false</includePluginDependencies>
         </configuration>
       </plugin>
-
     </plugins>
+    
     <pluginManagement>
       <plugins>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->

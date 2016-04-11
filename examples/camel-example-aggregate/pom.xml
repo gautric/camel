@@ -24,15 +24,11 @@
   <artifactId>camel-example-aggregate</artifactId>
   <version>2.18-SNAPSHOT</version>
   <packaging>jar</packaging>
-  
+
   <name>Camel :: Example :: Aggregate</name>
   <description>Demonstrates the persistent support for the Camel aggregator</description>
 
   <properties>
-    <camel.osgi.export.pkg>org.apache.camel.example.*</camel.osgi.export.pkg>
-      <!-- for symbolicName in OSGi examples we only want the artifactId, eg camel-example-sql -->
-    <!-- as having org.apache.camel as prefix is not needed and makes the name very long -->
-    <camel.osgi.symbolic.name>${project.artifactId}</camel.osgi.symbolic.name>
     <skip.starting.camel.context>false</skip.starting.camel.context>
   </properties>
 
@@ -143,8 +139,8 @@
           </execution>
         </executions>
       </plugin>
-
     </plugins>
+    
     <pluginManagement>
       <plugins>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->

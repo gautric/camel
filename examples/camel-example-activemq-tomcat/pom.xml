@@ -16,23 +16,58 @@
     limitations under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.apache.camel</groupId>
-    <artifactId>examples</artifactId>
-    <version>2.18-SNAPSHOT</version>
-  </parent>
-
+  <groupId>org.apache.camel</groupId>
   <artifactId>camel-example-activemq-tomcat</artifactId>
+  <version>2.18-SNAPSHOT</version>
+  <packaging>war</packaging>
+  
   <name>Camel :: Example :: ActiveMQ :: Tomcat</name>
   <description>An example using ActiveMQ Broker and Camel with Apache Tomcat</description>
-  <packaging>war</packaging>
+  
+  <properties>
+    <!-- for symbolicName in OSGi examples we only want the artifactId, eg camel-example-sql -->
+    <!-- as having org.apache.camel as prefix is not needed and makes the name very long -->
+    <camel.osgi.symbolic.name>${project.artifactId}</camel.osgi.symbolic.name>
+    <skip.starting.camel.context>false</skip.starting.camel.context>
+    <camel.osgi.export.pkg/>
+  </properties>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>resources</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <forkCount>1</forkCount>
+          <reuseForks>false</reuseForks>
+          <systemPropertyVariables>
+            <skipStartingCamelContext>${skip.starting.camel.context}</skipStartingCamelContext>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>tomcat-maven-plugin</artifactId>
@@ -57,12 +92,53 @@
         </configuration>
       </plugin>
     </plugins>
+    <pluginManagement>
+      <plugins>
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <versionRange>[2.3.7,)</versionRange>
+                    <goals>
+                      <goal>cleanVersions</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore/>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
     <!-- Name of the generated WAR file -->
     <finalName>camel-example-activemq-tomcat</finalName>
   </build>
 
-  <dependencies>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-parent</artifactId>
+        <version>${project.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
+  <dependencies>
     <!-- camel -->
     <dependency>
       <groupId>org.apache.camel</groupId>
